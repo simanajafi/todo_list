@@ -1,9 +1,25 @@
 import React, { Component } from 'react';
 import 'bootstrap/dist/css/bootstrap.css'
 import Header from './Header'
-
+import FromAddTodo from './FormAddTodo'
 
 class App extends Component {
+
+  state = {
+    todos: []
+  }
+  
+  AddTodo(text) {
+    this.setState(prevState => {
+      return {
+        todos: [
+          ...prevState.todos,
+          { key: Date.now(), done: false, text }
+        ]
+      }
+    })
+  }
+
   render() {
     return (
       <div className="App">
@@ -13,12 +29,7 @@ class App extends Component {
             <div className="container d-flex flex-column align-items-center">
               <h1 className="jumbotron-heading">Welcome!</h1>
               <p className="lead text-muted">To get started, add some items to your list:</p>
-              <div className="form-inline">
-                <div className="form-group">
-                  <input type="text" className="form-control mx-sm-3" placeholder="i want to do ..." />
-                  <button className="btn btn-primary">add</button>
-                </div>
-              </div>
+              <FromAddTodo add={this.AddTodo.bind(this)} / >
             </div>
           </section>
           <div className="todosList">
