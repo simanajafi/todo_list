@@ -31,6 +31,21 @@ class App extends Component {
     })
   }
 
+  editTodo(key, text) {
+    let { todos } = this.state
+    let item = todos.find(item => item.key === key)
+    item.text = text
+
+    let newTodos = todos.filter(item => item.key !== key)
+
+    this.setState({
+      todos: [
+        ...newTodos,
+        item
+      ]
+    })
+  }
+
   toggleTodo(key) {
     let { todos } = this.state
     let item = todos.find(item => item.key === key)
@@ -84,6 +99,7 @@ class App extends Component {
                                               item={item}
                                               delete={this.deleteTodo.bind(this)}
                                               done={this.toggleTodo.bind(this)}
+                                              edit={this.editTodo.bind(this)}
                                             />)
                 }  
               </div>
