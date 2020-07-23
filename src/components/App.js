@@ -23,9 +23,32 @@ class App extends Component {
     })
   }
 
+  deleteTodo(key) {
+    this.setState(prevState => {
+      return{
+      todos: prevState.todos.filter(item => item.key !== key)
+      }
+    })
+  }
+
+  toggleTodo(key) {
+    let { todos } = this.state
+    let item = todos.find(item => item.key === key)
+    item.done = !item.done
+
+    let newTodos = todos.filter(item => item.key !== key)
+
+    this.setState({
+      todos: [
+        ...newTodos,
+        item
+      ]
+    })
+  }
+
   render() {
     let { todos, statusDone } = this.state
-    let filterTodos = todos.filter(item => item.done == statusDone)
+    let filterTodos = todos.filter(item => item.done === statusDone)
 
     return (
       <div className="App">
@@ -46,17 +69,22 @@ class App extends Component {
                     
                     <a className={`nav-item nav-link font-weight-bold ${!statusDone ? 'active' : ''}`} 
                     onClick={() => this.setState({statusDone: false})} id="nav-home-tab"> 
-                    undone <span className="badge badge-secondary">{ todos.filter(item => item.done == false).length } </span></a>
+                    undone <span className="badge badge-secondary">{ todos.filter(item => item.done === false).length } </span></a>
                     
                     <a className={`nav-item nav-link font-weight-bold ${statusDone ? 'active' : ''}`} 
                     onClick={() => this.setState({statusDone: true})} id="nav-profile-tab"> 
-                    done <span className="badge badge-success">{ todos.filter(item => item.done == true).length } </span></a>
+                    done <span className="badge badge-success">{ todos.filter(item => item.done === true).length } </span></a>
                   
                   </div>
                 </nav>
-                { filterTodos.length == 0 
+                { filterTodos.length === 0 
                   ? "There isn't any Todos"
-                  : filterTodos.map(item => <Todo key={item.key} text={item.text} /> )
+                  : filterTodos.map(item => <Todo
+                                              key={item.key}
+                                              item={item}
+                                              delete={this.deleteTodo.bind(this)}
+                                              done={this.toggleTodo.bind(this)}
+                                            />)
                 }  
               </div>
 
