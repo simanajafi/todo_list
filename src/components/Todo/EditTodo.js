@@ -1,10 +1,12 @@
 
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
+import TodosContext from './../../Context/todos'
 
 
 function EditTodo(props) {
 
     const [ text, setText ] = useState(props.text)
+    const todosContext = useContext(TodosContext)
 
     let inputHandler = e => setText(e.target.value);
     
@@ -16,7 +18,7 @@ function EditTodo(props) {
                 </div>
                 <div>
                     <button type="button" className="btn btn-info btn-sm mr-1" 
-                        onClick={() => props.edit(text)}>edit</button>
+                        onClick={() => todosContext.edit(text)}>edit</button>
                 </div>
             </div>
         </div>

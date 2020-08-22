@@ -1,13 +1,15 @@
-import React, { useState } from 'react'
+import React, { useState, useContext } from 'react'
+import TodosContext from './../../Context/todos'
 
 
 function FormAddTodo(props) {
 
     const [text, setText] = useState('')
+    const todosContext = useContext(TodosContext)
 
     let formHandler = e => {
         e.preventDefault();
-        props.add(text)
+        todosContext.add(text)
         setText('')
       }
     

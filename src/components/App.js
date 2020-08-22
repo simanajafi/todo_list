@@ -3,7 +3,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import Header from './Layouts/Header'
 import FromAddTodo from './Todo/FormAddTodo'
 import TodoList from './Todo/TodoList';
-
+import TodosContext from './../Context/todos'
 
 class App extends Component {
 
@@ -64,30 +64,34 @@ class App extends Component {
     let { todos, statusDone } = this.state
 
     return (
-      <div className="App">
-        <Header />
-        <main>
-          <section className="jumbotron">
-            <div className="container d-flex flex-column align-items-center">
-              <h1 className="jumbotron-heading">Welcome!</h1>
-              <p className="lead text-muted">To get started, add some items to your list:</p>
-              <FromAddTodo add={this.AddTodo.bind(this)} / >
-            </div>
-          </section>
-          <div className="todosList">
-            <div className="container">
-              <div className="d-flex flex-column align-items-center ">
-                <TodoList 
-                  todos = {this.state.todos}
-                  delete={this.deleteTodo.bind(this)}
-                  done={this.toggleTodo.bind(this)}
-                  edit={this.editTodo.bind(this)} />
+      <TodosContext.Provider value={{
+        todos : this.state.todos,
+        add: this.AddTodo.bind(this),
+        delete: this.deleteTodo.bind(this),
+        done: this.toggleTodo.bind(this),
+        edit: this.deleteTodo.bind(this)
+      }}>
+        <div className="App">
+          <Header />
+          <main>
+            <section className="jumbotron">
+              <div className="container d-flex flex-column align-items-center">
+                <h1 className="jumbotron-heading">Welcome!</h1>
+                <p className="lead text-muted">To get started, add some items to your list:</p>
+                <FromAddTodo />
               </div>
+            </section>
+            <div className="todosList">
+              <div className="container">
+                <div className="d-flex flex-column align-items-center ">
+                  <TodoList />
+                </div>
 
+              </div>
             </div>
-          </div>
-        </main>
-      </div>
+          </main>
+        </div>
+      </TodosContext.Provider>
     )
   }
 }
