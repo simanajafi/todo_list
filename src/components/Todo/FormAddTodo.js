@@ -2,28 +2,56 @@ import React, { useState, useContext } from 'react'
 import TodosContext from './../../Context/todos'
 
 
-function FormAddTodo(props) {
+// function FormAddTodo(props) {
 
-    const [text, setText] = useState('')
-    const todosContext = useContext(TodosContext)
+//     const [text, setText] = useState('')
+//     const todosContext = useContext(TodosContext)
 
-    let formHandler = e => {
-        e.preventDefault();
-        todosContext.add(text)
-        setText('')
-      }
+//     let formHandler = e => {
+//         e.preventDefault();
+//         todosContext.add(text)
+//         setText('')
+//       }
     
-    let inputHandler = e => setText(e.target.value) 
+//     let inputHandler = e => setText(e.target.value) 
 
-    return(
-        <form className="form-inline" onSubmit={formHandler}>
-            <div className="form-group">
-                <input type="text" className="form-control mx-sm-3" placeholder="i want to do ..."
-                    onChange={inputHandler} value={text} />
-                <button type="submit" className="btn btn-primary">add</button>
-            </div>
-        </form>
-    )
+//     return(
+//         <form className="form-inline" onSubmit={formHandler}>
+//             <div className="form-group">
+//                 <input type="text" className="form-control mx-sm-3" placeholder="i want to do ..."
+//                     onChange={inputHandler} value={text} />
+//                 <button type="submit" className="btn btn-primary">add</button>
+//             </div>
+//         </form>
+//     )
+// }
+
+
+class FormAddTodo extends React.Component {
+
+    state = { text: '' }
+    static contextType = TodosContext;
+
+    formHandler(e) {
+        e.preventDefault();
+        this.context.add(this.state.text)
+        this.setState({ text: ''})
+    }
+    
+    inputHandler(e) { this.setState({ text: e.target.value }) }
+
+    render() {
+        return (
+            <form className="form-inline" onSubmit={this.formHandler.bind(this)}>
+                <div className="form-group">
+                    <input type="text" className="form-control mx-sm-3" placeholder="i want to do ..."
+                        onChange={this.inputHandler.bind(this)} value={this.state.text} />
+                    <button type="submit" className="btn btn-primary">add</button>
+                </div>
+            </form>
+        )
+    }
 }
+
 
 export default FormAddTodo;
