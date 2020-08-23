@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react'
 import TodosContext from './../../Context/todos'
+import AuthContext from './../../Context/auth'
 
 
 // function FormAddTodo(props) {
@@ -42,13 +43,25 @@ class FormAddTodo extends React.Component {
 
     render() {
         return (
-            <form className="form-inline" onSubmit={this.formHandler.bind(this)}>
-                <div className="form-group">
-                    <input type="text" className="form-control mx-sm-3" placeholder="i want to do ..."
-                        onChange={this.inputHandler.bind(this)} value={this.state.text} />
-                    <button type="submit" className="btn btn-primary">add</button>
-                </div>
-            </form>
+            <AuthContext.Consumer>
+                {context => ( // chon mkhaim shart dakhelesh bezarim bayad az yek tag biroi estefade konim <></>
+                    <> 
+                        {context.authenticated
+                                ? (
+                                    <form className="form-inline" onSubmit={this.formHandler.bind(this)}>
+                                        <div className="form-group">
+                                            <input type="text" className="form-control mx-sm-3" placeholder="i want to do ..."
+                                                onChange={this.inputHandler.bind(this)} value={this.state.text} />
+                                            <button type="submit" className="btn btn-primary">add</button>
+                                        </div>
+                                    </form>
+                                )
+                                : <p>You must be login</p>
+                        }
+                    </>
+                )
+                }
+            </AuthContext.Consumer>
         )
     }
 }
