@@ -7,11 +7,16 @@ function Todo(props) {
 
     const { item } = props;
     const [ edit, setEdit ] = useState(false);
-    const todosContext = useContext(TodosContext)
+    const todosContext = useContext(TodosContext);
     
     let editHandler = text => {
-        todosContext.edit(item.key, text)
-        setEdit(false)
+        todosContext.dispatch({ type: 'edit_todo' , payload: { key: item.key , text: text }})
+        setEdit(false);
+    }
+
+    let deleteHandler = e => {
+        //ajax
+        todosContext.dispatch({ type: 'delete_todo', payload: { key: item.key }})
     }
 
     return (
@@ -25,11 +30,11 @@ function Todo(props) {
                             </div>
                             <div>
                                 <button type="button" className={`btn btn-sm mr-1 ${item.done ? "btn-warning" : "btn-success"}`}
-                                    onClick={() => todosContext.done(item.key)}>{item.done ? "undone" : "done"}</button>
+                                    onClick={() => todosContext.dispatch({ type: 'toggle_todo', payload: { key: item.key , done: !item.done }})}>{item.done ? "undone" : "done"}</button>
                                 <button type="button" className="btn btn-info btn-sm mr-1" 
                                     onClick={() => setEdit(true)}>edit</button>
                                 <button type="button" className="btn btn-danger btn-sm"
-                                    onClick={() => todosContext.delete(item.key)}>delete</button>
+                                    onClick={deleteHandler}>delete</button>
                             </div>
                         </div>
                     </div>

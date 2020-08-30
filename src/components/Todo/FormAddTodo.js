@@ -35,7 +35,7 @@ class FormAddTodo extends React.Component {
 
     formHandler(e) {
         e.preventDefault();
-        this.context.add(this.state.text)
+        this.context.dispatch({ type: 'add_todo', payload: { text: this.state.text }})
         this.setState({ text: ''})
     }
     
