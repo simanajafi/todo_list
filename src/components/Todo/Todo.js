@@ -1,6 +1,7 @@
 import React, { useState, useContext } from 'react'
 import EditTodo from './EditTodo'
 import TodosContext from './../../Context/todos'
+import todoApi from './../../Api/todos';
 
 
 function Todo(props) {
@@ -10,13 +11,29 @@ function Todo(props) {
     const todosContext = useContext(TodosContext);
     
     let editHandler = text => {
-        todosContext.dispatch({ type: 'edit_todo' , payload: { key: item.key , text: text }})
+        todoApi.put(`/todos/${item.key}.json`, { done: item.done, text})
+        .then(response => {
+            todosContext.dispatch({ type: 'edit_todo' , payload: { key: item.key , text: text }})
+
+        })
+        .catch(err => console.log(err))
         setEdit(false);
     }
 
     let deleteHandler = e => {
-        //ajax
-        todosContext.dispatch({ type: 'delete_todo', payload: { key: item.key }})
+        todoApi.delete(`/todos/${item.key}.json`)
+        .then(response => {
+            todosContext.dispatch({ type: 'delete_todo', payload: { key: item.key }})
+        })
+        .catch(err => console.log(err))
+    }
+
+    let doneHandler = e => {
+        todoApi.put(`/todos/${item.key}.json`, { done: !item.done, text: item.text})
+        .then(response => {
+            todosContext.dispatch({ type: 'toggle_todo', payload: { key: item.key , done: !item.done }})
+        })
+        .catch(err => console.log(err)) 
     }
 
     return (
@@ -30,7 +47,7 @@ function Todo(props) {
                             </div>
                             <div>
                                 <button type="button" className={`btn btn-sm mr-1 ${item.done ? "btn-warning" : "btn-success"}`}
-                                    onClick={() => todosContext.dispatch({ type: 'toggle_todo', payload: { key: item.key , done: !item.done }})}>{item.done ? "undone" : "done"}</button>
+                                    onClick={doneHandler}>{item.done ? "undone" : "done"}</button>
                                 <button type="button" className="btn btn-info btn-sm mr-1" 
                                     onClick={() => setEdit(true)}>edit</button>
                                 <button type="button" className="btn btn-danger btn-sm"

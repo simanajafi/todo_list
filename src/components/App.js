@@ -1,4 +1,4 @@
-import React, { Component, useReducer } from 'react';
+import React, { useReducer, useEffect } from 'react';
 import 'bootstrap/dist/css/bootstrap.css'
 import Header from './Layouts/Header'
 import FromAddTodo from './Todo/FormAddTodo'
@@ -6,7 +6,7 @@ import TodoList from './Todo/TodoList';
 import TodosContext from './../Context/todos'
 import AuthContext from './../Context/auth'
 import AppReducer from './../Reducers/appReducer'
-
+import todoApi from './../Api/todos'
 // class App extends Component {
 
 //   state = {
@@ -25,6 +25,23 @@ function App() {
     todos : [],
     authenticated : false 
 })
+
+  useEffect(() => {
+    todoApi.get('/todos.json')
+      .then(response => jsonHandler(response.data))
+      .catch(err => console.log(err))
+  }, [])
+
+  let jsonHandler = (data) => {
+    let todos = Object.entries(data)
+      .map(([key, value]) => {  //map khodesh ye func ke vorodi list migire 2 a value dare
+        return {
+          ...value,
+          key
+        }
+      });
+    dispatch({ type: 'init_todo', payload: { todos } })
+  }
 
   return (
     <AuthContext.Provider value={{
