@@ -9,12 +9,14 @@ function Todo(props) {
     const { item } = props;
     const [ edit, setEdit ] = useState(false);
     const todosContext = useContext(TodosContext);
-    
+    const [ loading, setLoading ] = useState()
+
     let editHandler = text => {
+        setLoading(true)
         todoApi.put(`/todos/${item.key}.json`, { done: item.done, text})
         .then(response => {
             todosContext.dispatch({ type: 'edit_todo' , payload: { key: item.key , text: text }})
-
+            setLoading(false)
         })
         .catch(err => console.log(err))
         setEdit(false);
@@ -29,9 +31,11 @@ function Todo(props) {
     }
 
     let doneHandler = e => {
+        setLoading(true)
         todoApi.put(`/todos/${item.key}.json`, { done: !item.done, text: item.text})
         .then(response => {
             todosContext.dispatch({ type: 'toggle_todo', payload: { key: item.key , done: !item.done }})
+            setLoading(false)
         })
         .catch(err => console.log(err)) 
     }
@@ -43,7 +47,7 @@ function Todo(props) {
                     <div className="col-6 mb-2">
                         <div className="d-flex justify-content-between align-items-center border rounded p-3">
                             <div>
-                                {item.text}
+                                { loading ? <span>waiting...</span> : item.text}
                             </div>
                             <div>
                                 <button type="button" className={`btn btn-sm mr-1 ${item.done ? "btn-warning" : "btn-success"}`}
@@ -57,7 +61,7 @@ function Todo(props) {
                     </div>
                 )
                     :
-                    <EditTodo text={item.text} edit={editHandler}/>
+                    <EditTodo text={item.text} edit={editHandler} loading={loading} />
             }
         </>
     )

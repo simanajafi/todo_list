@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect } from 'react';
+import React, { useReducer, useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.css'
 import Header from './Layouts/Header'
 import FromAddTodo from './Todo/FormAddTodo'
@@ -21,18 +21,22 @@ import todoApi from './../Api/todos'
 
 function App() {
 
+  const [ loading, setLoading ] = useState()
+
   const [state , dispatch] = useReducer(AppReducer , {
     todos : [],
     authenticated : false 
 })
 
   useEffect(() => {
+    setLoading(true)
     todoApi.get('/todos.json')
       .then(response => jsonHandler(response.data))
       .catch(err => console.log(err))
   }, [])
 
   let jsonHandler = (data) => {
+    setLoading(false)
     let todos = Object.entries(data)
       .map(([key, value]) => {  //map khodesh ye func ke vorodi list migire 2 a value dare
         return {
@@ -65,7 +69,11 @@ function App() {
             <div className="todosList">
               <div className="container">
                 <div className="d-flex flex-column align-items-center ">
-                  <TodoList />
+                  {
+                    loading
+                    ? <h2>loading data...</h2>
+                    : <TodoList />
+                  }
                 </div>
 
               </div>
