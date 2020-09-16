@@ -7,7 +7,8 @@ import TodosContext from './../Context/todos'
 import AuthContext from './../Context/auth'
 import AppReducer from './../Reducers/appReducer'
 import Home from './../Routes/Home'
-
+import About from '../Routes/About';
+import Contact from './../Routes/Contact'
 // class App extends Component {
 
 //   state = {
@@ -42,9 +43,10 @@ function App() {
           <div className="App">
             <Header />
             <main>
-              <Route path="/">
-                <Home />
-              </Route>
+              <Route path="/" exact component={Home} />
+              <Route path="/about" component={About} />
+              <Route path="/contact" render={Contact} />
+              {/* <Route path="/contact" render={() => <h2>Contact..</h2>} /> */}
             </main>
           </div>
         </TodosContext.Provider>
