@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react'
 import EditTodo from './EditTodo'
 import TodosContext from './../../Context/todos'
 import todoApi from './../../Api/todos';
+import { Link } from 'react-router-dom'
 
 
 function Todo(props) {
@@ -47,7 +48,7 @@ function Todo(props) {
                     <div className="col-6 mb-2">
                         <div className="d-flex justify-content-between align-items-center border rounded p-3">
                             <div>
-                                { loading ? <span>waiting...</span> : item.text}
+                                { loading ? <span>waiting...</span> : <Link to={`/todo/${item.key}`}>{item.text}</Link>}
                             </div>
                             <div>
                                 <button type="button" className={`btn btn-sm mr-1 ${item.done ? "btn-warning" : "btn-success"}`}

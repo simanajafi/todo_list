@@ -9,6 +9,7 @@ import AppReducer from './../Reducers/appReducer'
 import Home from './../Routes/Home'
 import About from '../Routes/About';
 import Contact from './../Routes/Contact'
+import Todo from '../Routes/Todo';
 // class App extends Component {
 
 //   state = {
@@ -44,8 +45,11 @@ function App() {
             <Header />
             <main>
               <Route path="/" exact component={Home} />
+              <Route path="/todo/:todo" component={Todo} />
+              <Route path="/courses/:todo/create" component={Todo} />
+
               <Route path="/about" component={About} />
-              <Route path="/contact" render={Contact} />
+              <Route path="/contact" component={Contact} />
               {/* <Route path="/contact" render={() => <h2>Contact..</h2>} /> */}
             </main>
           </div>
