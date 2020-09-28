@@ -1,5 +1,5 @@
 import React, { useReducer } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.css'
 import Header from './Layouts/Header'
 
@@ -44,13 +44,13 @@ function App() {
           <div className="App">
             <Header />
             <main>
-              <Route path="/" exact component={Home} />
-              <Route path="/todo/:todo" component={Todo} />
-              <Route path="/courses/:todo/create" component={Todo} />
-
-              <Route path="/about" component={About} />
-              <Route path="/contact" component={Contact} />
-              {/* <Route path="/contact" render={() => <h2>Contact..</h2>} /> */}
+              <Switch>
+                <Route path="/" exact component={Home} />
+                <Route path="/about" component={About} />
+                <Route path="/contact" component={Contact} />
+                <Route path="/:todo" component={Todo} />
+                {/* //{ <Route path="/contact" render={() => <h2>Contact..</h2>} /> } */}
+              </Switch>
             </main>
           </div>
         </TodosContext.Provider>

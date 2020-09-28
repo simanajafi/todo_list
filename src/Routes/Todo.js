@@ -3,17 +3,15 @@ import { useParams } from 'react-router-dom'
 import TodoApi from './../Api/todos'
 
 function Todo(props) {
-    const params = useParams()
+    const params = useParams() //hamon meghdar value ro barmigardone az url
     const [todo, setTodo] = useState({})
     const [loading, setLoading] = useState()
 
     useEffect(() => {
         setLoading(true)
-        console.log(params)
         TodoApi.get(`/todos/${params.todo}.json`)
             .then(response => {
                 setLoading(false)
-                console.log(response)
                 setTodo({ ...response.data, key: params.todo })
             })
             .catch(err => console.log(err))
